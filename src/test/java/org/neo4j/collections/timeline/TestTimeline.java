@@ -19,18 +19,8 @@
  */
 package org.neo4j.collections.timeline;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 import java.util.Iterator;
 import java.util.LinkedList;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
 import org.neo4j.collections.Neo4jTestCase;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.TransactionFailureException;
@@ -39,18 +29,20 @@ public class TestTimeline extends Neo4jTestCase
 {
 	private Timeline timeline;
 	
-	@Before
-	public void setUpTimeline() throws Exception
+	@Override
+	public void setUp()
 	{
+		super.setUp();
 		Node node = graphDb().createNode();
 		timeline = new Timeline( "test_timeline", node, false, graphDb() ); 
 	}
 	
-	@After
-	public void tearDownTimeline() throws Exception
+	@Override
+	public void tearDown()
 	{
-        restartTx(true);
+		restartTx(true);
 		timeline.delete();
+		super.tearDown();
 	}
 	
 	private long getStamp()
@@ -67,7 +59,6 @@ public class TestTimeline extends Neo4jTestCase
 		return stamp;
 	}
 	
-	@Test
 	public void testTimelineBasic()
 	{
 		Node node1 = graphDb().createNode();
@@ -241,7 +232,6 @@ public class TestTimeline extends Neo4jTestCase
 		node3.delete();
 	}
 	
-	@Test
     public void testIllegalStuff()
 	{
 
@@ -303,7 +293,6 @@ public class TestTimeline extends Neo4jTestCase
 		}
 	}
 	
-	@Test
     public void testIndexedTimeline()
 	{
 		Node tlNode = graphDb().createNode();
@@ -350,7 +339,6 @@ public class TestTimeline extends Neo4jTestCase
 		timeline.delete();
 	}
 	
-	@Test
     public void testIndexedTimeline2()
     {
         Node tlNode = graphDb().createNode();
@@ -375,7 +363,6 @@ public class TestTimeline extends Neo4jTestCase
         }
     }
     
-	@Test
     public void testTimelineSameTimestamp()
 	{
 		Node tlNode = graphDb().createNode();
@@ -426,7 +413,6 @@ public class TestTimeline extends Neo4jTestCase
 		timeline.delete();
 	}
 	
-	@Test
     public void testMultipleTimelines()
 	{
 		Node tlNode1 = graphDb().createNode();
@@ -465,7 +451,6 @@ public class TestTimeline extends Neo4jTestCase
 		node1.delete(); node2.delete(); node3.delete(); node4.delete();
 	}
 
-	@Test
     public void testTimelineRemoveNode()
     {
         Node tlNode = graphDb().createNode();
@@ -495,7 +480,6 @@ public class TestTimeline extends Neo4jTestCase
         }
     }
     
-	@Test
     public void testDeleteTimeline()
     {
         Node tlNode = graphDb().createNode();
@@ -522,9 +506,8 @@ public class TestTimeline extends Neo4jTestCase
         }
     }
 	
-	@Test
-    @Ignore("crashes the VM")
-    public void shouldNotDegradePerformanceWhenAddingMoreStuff()
+    //@Ignore("crashes the VM")
+    public void testShouldNotDegradePerformanceWhenAddingMoreStuff()
     {
         Node tlNode = graphDb().createNode();
         Timeline indexedTimeline = new Timeline( "test", tlNode, true, graphDb() );
@@ -540,8 +523,7 @@ public class TestTimeline extends Neo4jTestCase
         indexedTimeline.delete(5000);
     }
 	
-	@Test
-    public void shouldDeleteNicely()
+    public void testShouldDeleteNicely()
     {
         Node tlNode = graphDb().createNode();
         Timeline indexedTimeline = new Timeline( "test", tlNode, true, 4, graphDb() );

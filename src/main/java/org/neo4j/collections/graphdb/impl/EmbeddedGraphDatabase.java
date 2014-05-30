@@ -19,15 +19,13 @@
  */
 package org.neo4j.collections.graphdb.impl;
 
-import org.neo4j.graphdb.factory.GraphDatabaseBuilder;
-import org.neo4j.graphdb.factory.GraphDatabaseFactory;
-
 import java.util.Map;
+import org.neo4j.graphdb.factory.GraphDatabaseFactory;
 
 public class EmbeddedGraphDatabase extends GraphDatabaseImpl{
 
 	public EmbeddedGraphDatabase(String storeDir){
-		super(new GraphDatabaseFactory().newEmbeddedDatabase(storeDir));
+		super(new GraphDatabaseFactory().newEmbeddedDatabaseBuilder(storeDir).newGraphDatabase());
 	}
 	
 	public EmbeddedGraphDatabase(String storeDir, Map<String,String> params){

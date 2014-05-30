@@ -19,14 +19,8 @@
  */
 package org.neo4j.collections.list;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertNotNull;
-
 import java.util.ArrayList;
 import java.util.Collections;
-
-import org.junit.Test;
 import org.neo4j.collections.NodeCollectionLoader;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Relationship;
@@ -39,7 +33,6 @@ import org.neo4j.graphdb.Relationship;
  */
 public class TestUnrolledLinkedList extends UnrolledLinkedListTestCase
 {
-    @Test
     public void testCreationAndRecreating()
     {
         ArrayList<Node> nodes = createNodes( 2 );
@@ -62,7 +55,6 @@ public class TestUnrolledLinkedList extends UnrolledLinkedListTestCase
         checkItemCounts( list.getBaseNode() );
     }
 
-    @Test
     public void testCreationAndLoading()
     {
         ArrayList<Node> nodes = createNodes( 2 );
@@ -88,7 +80,6 @@ public class TestUnrolledLinkedList extends UnrolledLinkedListTestCase
         checkItemCounts( list.getBaseNode() );
     }
 
-    @Test
     public void testNormalOrder()
     {
         ArrayList<Node> nodes = createNodes( 20 );
@@ -118,7 +109,6 @@ public class TestUnrolledLinkedList extends UnrolledLinkedListTestCase
         checkItemCounts( list.getBaseNode() );
     }
 
-    @Test
     public void testRandomOrder()
     {
         ArrayList<Node> nodes = createNodes( 20 );
@@ -149,7 +139,6 @@ public class TestUnrolledLinkedList extends UnrolledLinkedListTestCase
         checkItemCounts( list.getBaseNode() );
     }
 
-    @Test
     public void testReversedOrder()
     {
         ArrayList<Node> nodes = createNodes( 20 );
@@ -180,7 +169,6 @@ public class TestUnrolledLinkedList extends UnrolledLinkedListTestCase
         checkItemCounts( list.getBaseNode() );
     }
 
-    @Test
     public void testAllEqual()
     {
         ArrayList<Node> nodes = createNodes( 20 );
@@ -209,7 +197,6 @@ public class TestUnrolledLinkedList extends UnrolledLinkedListTestCase
         checkItemCounts( list.getBaseNode() );
     }
 
-    @Test
     public void testRemovalNormalOrder()
     {
         ArrayList<Node> nodes = createNodes( 20 );
@@ -240,7 +227,6 @@ public class TestUnrolledLinkedList extends UnrolledLinkedListTestCase
         checkItemCounts( list.getBaseNode() );
     }
 
-    @Test
     public void testRemovalRandomOrder()
     {
         ArrayList<Node> nodes = createNodes( 20 );
@@ -272,7 +258,6 @@ public class TestUnrolledLinkedList extends UnrolledLinkedListTestCase
         checkItemCounts( list.getBaseNode() );
     }
 
-    @Test
     public void testRemovalReversedOrder()
     {
         ArrayList<Node> nodes = createNodes( 20 );
@@ -304,7 +289,6 @@ public class TestUnrolledLinkedList extends UnrolledLinkedListTestCase
         checkItemCounts( list.getBaseNode() );
     }
 
-    @Test
     public void testRemoveAllEqual()
     {
         ArrayList<Node> nodes = createNodes( 20 );
@@ -334,7 +318,6 @@ public class TestUnrolledLinkedList extends UnrolledLinkedListTestCase
         checkItemCounts( list.getBaseNode() );
     }
 
-    @Test
     public void testRemoveNonExisting()
     {
         ArrayList<Node> nodes = createNodes( 20 );
@@ -364,7 +347,6 @@ public class TestUnrolledLinkedList extends UnrolledLinkedListTestCase
         checkItemCounts( list.getBaseNode() );
     }
 
-    @Test
     public void testValueRelationshipKeepsAttributes()
     {
         ArrayList<Node> nodes = createNodes( 20 );

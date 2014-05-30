@@ -19,10 +19,6 @@
  */
 package org.neo4j.collections.list;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertTrue;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -36,8 +32,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-
-import org.junit.Ignore;
 import org.junit.Test;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Transaction;
@@ -113,58 +107,57 @@ public class TestUnrolledLinkedListConcurrency extends UnrolledLinkedListTestCas
         assertTrue( reader.get( 1000, TimeUnit.MILLISECONDS ) );
     }
 
-    @Test
-    @Ignore("Not relevant anymore as there are no non-transactional reads")
-    public void testAddInSamePageHavingReadPastWithoutReadTransaction() throws Exception
-    {
-        final ArrayList<Node> nodes = createNodes( 4 );
-        final UnrolledLinkedList list = new UnrolledLinkedList( graphDb(), new IdComparator(), 4 );
-        final StateSynchronizer sync = new StateSynchronizer( States.class );
-
-        FutureTask<Boolean> reader = new ThrowingFutureTask<Boolean>( new Callable<Boolean>()
-        {
-            @Override
-            public Boolean call() throws Exception
-            {
-                ArrayList<Node> innerNodes = new ArrayList<Node>( nodes.subList( 0, 3 ) );
-                Collections.reverse( innerNodes );
-                assertTrue( sync.wait( States.READ ) );
-                UnrolledLinkedList innerList = new UnrolledLinkedList( list.getBaseNode() );
-
-                int count = 0;
-                for ( Node node : innerList )
-                {
-                    assertEquals( innerNodes.get( count ), node );
-                    if ( ++count == 2 )
-                    {
-                        // will receive read signal as there will be no read lock against the base node therefore
-                        // the writer add node will not block
-                        assertTrue( sync.signalAndWait( States.WRITE, States.READ, 1, TimeUnit.SECONDS ) );
-                    }
-                }
-
-                return true;
-            }
-        } );
-        executorService.execute( reader );
-
-        int count = 0;
-        for ( Node node : nodes )
-        {
-            list.addNode( node );
-            if ( ++count == 3 )
-            {
-                // commits the nodes added through by the writer so the reader can then see them
-                // also releases the write lock held on base node allowing reader thread access
-                restartTx();
-                assertTrue( sync.signalAndWait( States.READ, States.WRITE ) );
-            }
-        }
-        restartTx();
-        sync.signal( States.READ );
-
-        assertTrue( reader.get( 1000, TimeUnit.MILLISECONDS ) );
-    }
+//    @Ignore("Not relevant anymore as there are no non-transactional reads")
+//    public void testAddInSamePageHavingReadPastWithoutReadTransaction() throws Exception
+//    {
+//        final ArrayList<Node> nodes = createNodes( 4 );
+//        final UnrolledLinkedList list = new UnrolledLinkedList( graphDb(), new IdComparator(), 4 );
+//        final StateSynchronizer sync = new StateSynchronizer( States.class );
+//
+//        FutureTask<Boolean> reader = new ThrowingFutureTask<Boolean>( new Callable<Boolean>()
+//        {
+//            @Override
+//            public Boolean call() throws Exception
+//            {
+//                ArrayList<Node> innerNodes = new ArrayList<Node>( nodes.subList( 0, 3 ) );
+//                Collections.reverse( innerNodes );
+//                assertTrue( sync.wait( States.READ ) );
+//                UnrolledLinkedList innerList = new UnrolledLinkedList( list.getBaseNode() );
+//
+//                int count = 0;
+//                for ( Node node : innerList )
+//                {
+//                    assertEquals( innerNodes.get( count ), node );
+//                    if ( ++count == 2 )
+//                    {
+//                        // will receive read signal as there will be no read lock against the base node therefore
+//                        // the writer add node will not block
+//                        assertTrue( sync.signalAndWait( States.WRITE, States.READ, 1, TimeUnit.SECONDS ) );
+//                    }
+//                }
+//
+//                return true;
+//            }
+//        } );
+//        executorService.execute( reader );
+//
+//        int count = 0;
+//        for ( Node node : nodes )
+//        {
+//            list.addNode( node );
+//            if ( ++count == 3 )
+//            {
+//                // commits the nodes added through by the writer so the reader can then see them
+//                // also releases the write lock held on base node allowing reader thread access
+//                restartTx();
+//                assertTrue( sync.signalAndWait( States.READ, States.WRITE ) );
+//            }
+//        }
+//        restartTx();
+//        sync.signal( States.READ );
+//
+//        assertTrue( reader.get( 1000, TimeUnit.MILLISECONDS ) );
+//    }
 
     private static class StateSynchronizer
     {

@@ -19,13 +19,9 @@
  */
 package org.neo4j.collections.list;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertTrue;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
-
 import org.neo4j.collections.GraphCollection;
 import org.neo4j.collections.Neo4jTestCase;
 import org.neo4j.graphdb.Direction;
@@ -103,7 +99,7 @@ public class UnrolledLinkedListTestCase extends Neo4jTestCase
 
     protected ArrayList<Node> createNodes( int count )
     {
-        ArrayList<Node> nodes = new ArrayList<Node>();
+        ArrayList<Node> nodes = new ArrayList<>();
         for ( int i = 0; i < count; i++ )
         {
             nodes.add( graphDb().createNode() );
@@ -115,6 +111,7 @@ public class UnrolledLinkedListTestCase extends Neo4jTestCase
 
     public static class IdComparator implements java.util.Comparator<Node>
     {
+	@Override
         public int compare( Node n1, Node n2 )
         {
             return ((Long) n1.getId()).compareTo( n2.getId() );
@@ -123,6 +120,7 @@ public class UnrolledLinkedListTestCase extends Neo4jTestCase
 
     public static class EqualComparator implements java.util.Comparator<Node>
     {
+	@Override
         public int compare( Node n1, Node n2 )
         {
             return 0;

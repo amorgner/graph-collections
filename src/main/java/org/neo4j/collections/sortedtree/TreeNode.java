@@ -21,10 +21,8 @@ package org.neo4j.collections.sortedtree;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-
 import javax.transaction.Transaction;
 import javax.transaction.TransactionManager;
-
 import org.neo4j.collections.NodeCollection;
 import org.neo4j.collections.graphdb.PropertyComparator;
 import org.neo4j.collections.sortedtree.SortedTree.RelTypes;
